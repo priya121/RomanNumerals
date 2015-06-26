@@ -1,21 +1,15 @@
 def romanize(number)
-  numeral_one = "I"
-  numeral_five = "V"
-  numeral_ten = "X"
-  if number <= 3
-    numeral_one*number
-  elsif number == 4
-    numeral_one + numeral_five
-  elsif number.between?(5,8)
-    remainder =  number%5 
-    numeral_five + numeral_one*(remainder) 
-  elsif number.between?(9,10)
-    if number == 9
-      numeral_one + numeral_ten
-    elsif number == 10 
-      numeral_ten
-    end
-  end
+  numerals = {1 => "I", 4 => "IV", 5 => "V", 9 => "IX", 10 => "X"}
+    reversed_numerals_hash = numerals.to_a.reverse.to_h
+     romanized = ""
+      reversed_numerals_hash.each do |key,value|
+        relevant_numeral = (number/key)
+        relevant_numeral.times do |numeral|
+          romanized << value
+           number -= key
+        end
+      end
+      romanized
 end
 
 describe 'roman numerals - numerize -' do
@@ -48,6 +42,9 @@ describe 'roman numerals - numerize -' do
   end
   it 'takes 10 and returns X' do 
     expect(romanize(10)).to eq("X")
+  end
+  it 'takes 17 and returns XVII' do
+    expect(romanize(17)).to eq("XVII")
   end
 end
 
